@@ -151,10 +151,10 @@ def show_time_comparisons(df):
 import streamlit as st
 from fetch_data import fetch_all_videos
 
-def app():
-    st.title("📈 Estadísticas avanzadas")
-    df = fetch_all_videos(channel_id=os.getenv("CHANNEL_ID"))
-    show_time_comparisons(df)
+# def app():
+#     st.title("📈 Estadísticas avanzadas")
+#     df = fetch_all_videos(channel_id=os.getenv("CHANNEL_ID"))
+#     show_time_comparisons(df)
 
-app()
+# app()
 
