@@ -2,13 +2,10 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 from datetime import timedelta
-from fetch_data import fetch_all_videos
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-import streamlit as st
 
 def show_time_comparisons(df):
     """Muestra comparaciones de rendimiento en diferentes ventanas de tiempo."""
@@ -36,8 +33,6 @@ def show_time_comparisons(df):
     c2.metric("Likes (últimos 7)", f"{l_ult7:,}", delta=l_ult7 - l_prev7)
     c3.metric("Comentarios (últimos 7)", f"{c_ult7:,}", delta=c_ult7 - c_prev7)
     c4.metric("Videos publicados (últimos 7)", f"{len(ultimos_7):,}", delta=len(ultimos_7) - len(previos_7))
-
-    # … (resto de comparaciones que ya tienes: 28 días, mensual, top meses, día de semana)
 
     # -----------------------
     # ÚLTIMOS 28 DÍAS vs 28 ANTERIORES
@@ -145,11 +140,8 @@ def show_time_comparisons(df):
     st.plotly_chart(fig_wd, use_container_width=True)
 
 # === LLAMADA: pega esto donde ya tengas df cargado ===
-# show_time_comparisons(df)
+#show_time_comparisons(df)
 
-# src/pages/estadisticas.py
-import streamlit as st
-from fetch_data import fetch_all_videos
 
 # def app():
 #     st.title("📈 Estadísticas avanzadas")
@@ -157,4 +149,3 @@ from fetch_data import fetch_all_videos
 #     show_time_comparisons(df)
 
 # app()
-

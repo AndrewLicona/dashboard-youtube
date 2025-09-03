@@ -1,21 +1,35 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-#from pages import estadisticas
+
 # ==============================
 # 📂 Cargar datos
 # ==============================
 @st.cache_data
 def load_data():
-    return pd.read_csv("data/videos.csv", parse_dates=["Publicado"])
+    df = pd.read_csv("data/videos.csv", encoding="utf-8-sig")
+
+    # ✅ Convertir a datetime de forma explícita
+    if "Publicado" in df.columns:
+        df["Publicado"] = pd.to_datetime(df["Publicado"], errors="coerce")
+        df = df.dropna(subset=["Publicado"]) 
+    return df
 
 df = load_data()
-def show():
+
+
+def show(df):
     # ==============================
     # 🎨 Configuración inicial
     # ==============================
     st.set_page_config(page_title="Dashboard YouTube AJDREW", layout="wide")
     st.title("📊 Dashboard - AJDREW Gameplays")
+
+    # ✅ Reforzar que la columna sea datetime por seguridad
+    if "Publicado" in df.columns:
+        df["Publicado"] = pd.to_datetime(df["Publicado"], errors="coerce")
+        df = df.dropna(subset=["Publicado"])
+
     # ==============================
     # 📌 Resumen general
     # ==============================
@@ -42,7 +56,6 @@ def show():
         fig_line = px.line(df_sorted, x="Publicado", y="Vistas", title="Vistas por video publicado")
 
     st.plotly_chart(fig_line, use_container_width=True)
-
 
     # ==============================
     # 📅 Evolución mensual
@@ -98,14 +111,13 @@ def show():
     else:
         st.info("Aún no hay suficientes meses para comparación 📊")
 
-
     # ==============================
     # 🏆 Top 10 videos más vistos
     # ==============================
     st.subheader("Top 10 videos más vistos")
 
     top_videos = df.sort_values("Vistas", ascending=False).head(10)
-    top_videos = top_videos.iloc[::-1]  # mayor arriba
+    top_videos = top_videos.iloc[::-1]
     top_videos["Título corto"] = top_videos["Título"].apply(
         lambda x: x if len(x) <= 50 else x[:47] + "..."
     )
@@ -116,7 +128,6 @@ def show():
         y="Título corto",
         orientation="h",
         text="Vistas",
-        
     )
 
     fig_bar.update_layout(yaxis_title="Título (corto)", xaxis_title="Vistas")
@@ -154,4 +165,3 @@ def show():
         df_page_display.to_html(escape=False, index=False),
         unsafe_allow_html=True
     )
-show()

@@ -9,11 +9,11 @@ API_SERVICE_NAME = "youtube"
 API_VERSION = "v3"
 
 def get_youtube_service():
-    """Crea un cliente de la API de YouTube."""
+    """Crea un cliente de la API de YouTube (API pública con API Key)."""
     return build(API_SERVICE_NAME, API_VERSION, developerKey=API_KEY)
 
 def get_channel_stats(channel_id):
-    """Obtiene estadísticas del canal."""
+    """Obtiene estadísticas generales del canal (subs, views, videos)."""
     youtube = get_youtube_service()
     request = youtube.channels().list(
         part="snippet,contentDetails,statistics",
@@ -22,7 +22,7 @@ def get_channel_stats(channel_id):
     return request.execute()
 
 def get_videos_from_playlist(playlist_id, max_results=50, page_token=None):
-    """Obtiene videos de una playlist (ej: uploads del canal)."""
+    """Obtiene videos de una playlist (ejemplo: uploads del canal)."""
     youtube = get_youtube_service()
     request = youtube.playlistItems().list(
         part="snippet,contentDetails",
@@ -33,7 +33,7 @@ def get_videos_from_playlist(playlist_id, max_results=50, page_token=None):
     return request.execute()
 
 def get_video_stats(video_ids):
-    """Obtiene estadísticas de videos por ID."""
+    """Obtiene estadísticas de videos por ID (likes, views, comentarios, etc.)."""
     youtube = get_youtube_service()
     request = youtube.videos().list(
         part="snippet,statistics,contentDetails",
