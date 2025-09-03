@@ -70,11 +70,11 @@ streamlit run src/main.py
 
 ```
 ## 🚀 Tecnologías usadas
--[Python](https://www.python.org/) 
--[Streamlit](https://streamlit.io/)
--[Pandas](https://pandas.pydata.org/)
--[Plotly](https://plotly.com/)
--[YouTube Analytics API](https://developers.google.com/youtube/v3/docs/channels)
+- [Python](https://www.python.org/) 
+- [Streamlit](https://streamlit.io/)
+- [Pandas](https://pandas.pydata.org/)
+- [Plotly](https://plotly.com/)
+- [YouTube Analytics API](https://developers.google.com/youtube/v3/docs/channels)
 ---
 
 
