@@ -79,12 +79,17 @@ streamlit run src/main.py
 
 
 ### 📸 Capturas 
-![alt text](img/image.png)
-![alt text](img/image-1.png)
-![alt text](img/image-2.png)
-![alt text](img/image-3.png)
-![alt text](img/image-4.png)
+### 📸 Capturas  
 
+| Dashboard | Comparativa | Estadísticas |
+|-----------|-------------|--------------|
+| ![Dashboard](./img/image.png) | ![Comparativa](./img/image-3.png) | ![Estadísticas](./img/image-2.png) |
+
+| Ranking | Detalle |Evolución|
+|---------|---------|---------|
+| ![Ranking](./img/image-5.png) | ![Detalle](./img/image-4.png) |![alt text](image.png) | ![Evolución](./img/image-1.png)
+
+---
 
 
 ### 👨‍💻 Autor
