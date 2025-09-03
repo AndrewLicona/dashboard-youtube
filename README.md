@@ -67,9 +67,9 @@ streamlit run src/main.py
  ┣ .gitignore
  ┣ requirements.txt
  ┣ README.md
-🚀 Tecnologías usadas
+
 ```
-### 🚀 Tecnologías usadas
+## 🚀 Tecnologías usadas
 -[Python](https://www.python.org/) 
 -[Streamlit](https://streamlit.io/)
 -[Pandas](https://pandas.pydata.org/)
@@ -78,19 +78,18 @@ streamlit run src/main.py
 ---
 
 
-### 📸 Capturas 
-### 📸 Capturas  
+## 📸 Capturas  
 
 | Dashboard | Comparativa | Estadísticas |
 |-----------|-------------|--------------|
 | ![Dashboard](./img/image.png) | ![Comparativa](./img/image-3.png) | ![Estadísticas](./img/image-2.png) |
 
-| Ranking | Detalle |Evolución|
-|---------|---------|---------|
-| ![Ranking](./img/image-5.png) | ![Detalle](./img/image-4.png) |![alt text](image.png) | ![Evolución](./img/image-1.png)
+| Ranking | Detalle | Evolución |
+|---------|---------|-----------|
+| ![Ranking](./img/image-5.png) | ![Detalle](./img/image-4.png) | ![Evolución](./img/image-1.png) |
 
 ---
 
 
-### 👨‍💻 Autor
+## 👨‍💻 Autor
 Proyecto desarrollado por **Andrew Licona**
