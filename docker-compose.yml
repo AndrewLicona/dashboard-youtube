@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  ajdrew-dashboard:
+    build: .
+    container_name: ajdrew-dashboard
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data   # monta la carpeta data para persistir resultados
+    restart: unless-stopped
