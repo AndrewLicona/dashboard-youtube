@@ -27,5 +27,5 @@ ENV PYTHONUNBUFFERED=1 \
     STREAMLIT_SERVER_HEADLESS=true
 ENV PYTHONPATH=/app
 
-# 8️⃣ Comando de inicio: ejecutar primero fetchs y luego Streamlit
-CMD ["sh", "-c", "python -m src.fetchs.fetch_data && python -m src.fetchs.fetch_daily && streamlit run src/main.py"]
+# 8️⃣ Comando de inicio: ejecutar primero servicios de descarga y luego Streamlit
+CMD ["sh", "-c", "python -m src.services.fetch_data && python -m src.services.fetch_daily && streamlit run main.py"]
