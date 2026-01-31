@@ -2,7 +2,7 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 import os
-from src.core.config import CLIENT_SECRET_FILE, logger
+from src.core.config import logger
 from src.core.database import SessionLocal
 from src.services.auth_service import get_credentials_from_db
 

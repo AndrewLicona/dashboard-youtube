@@ -18,7 +18,7 @@ from googleapiclient.discovery import build
 from typing import Optional
 from src.services.fetch_data import fetch_all_videos
 from src.services.fetch_daily import fetch_daily_stats
-from src.core.config import CHANNEL_ID, logger, API_KEY
+from src.core.config import logger, API_KEY
 
 app = FastAPI(title="AJDREW Analytics API")
 
@@ -36,7 +36,7 @@ async def root():
 
 def get_cache_path(filename, channel_id=None):
     """Helper to get namespaced cache path."""
-    if channel_id and channel_id != CHANNEL_ID:
+    if channel_id:
         return os.path.join("data", f"{channel_id}_{filename}")
     return os.path.join("data", filename)
 
@@ -46,7 +46,10 @@ def get_videos(
     x_youtube_api_key: Optional[str] = Header(None)
 ):
     """Returns videos. Auto-fetches if cache missing and API key provided."""
-    target_channel_id = x_youtube_channel_id or CHANNEL_ID
+    target_channel_id = x_youtube_channel_id
+    if not target_channel_id:
+        return []
+        
     csv_path = get_cache_path("videos.csv", x_youtube_channel_id)
 
     if os.path.exists(csv_path):
@@ -112,7 +115,8 @@ def get_analytics(
     
     # Fallback to default demo data ONLY if we are requesting the main channel 
     # AND we failed to fetch/load custom data.
-    if not x_youtube_channel_id or x_youtube_channel_id == CHANNEL_ID:
+    # Fallback to default demo data ONLY if we failed to fetch/load custom data and have no ID
+    if not x_youtube_channel_id:
         # Try default
         default_path = os.path.join("data", "daily_stats.csv")
         if os.path.exists(default_path):
@@ -132,7 +136,9 @@ async def refresh_data(
          # Use default if configured? No, require keys for dynamic operations
          return {"message": "API Key required for refresh"}
     
-    target_id = x_youtube_channel_id or CHANNEL_ID
+    target_id = x_youtube_channel_id
+    if not target_id:
+        raise HTTPException(status_code=400, detail="Channel ID required")
     
     # Run sync fetch (blocking for simplicity in MVP)
     try:
@@ -152,8 +158,16 @@ async def get_channel_info(
     x_youtube_api_key: Optional[str] = Header(None)
 ):
     """Returns basic channel info and stats."""
-    channel_id = x_youtube_channel_id or CHANNEL_ID
+    channel_id = x_youtube_channel_id
     stats = {}
+    
+    if not channel_id:
+         return {
+            "channelTitle": "AJDREW Gameplays",
+            "channelId": "demo",
+            "theme": "Gamer Green",
+            "stats": {"subscribers": 0, "views": 0, "videos": 0}
+        }
     
     # Try to fetch real stats if API Key is available or using default environment key
     try:
