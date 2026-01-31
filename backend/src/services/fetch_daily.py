@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from src.core.config import logger, DATA_DIR
 from src.services.api_youtube_analytics import get_youtube_analytics_service
 
