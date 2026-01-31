@@ -1,7 +1,7 @@
-import pandas as pd
-from datetime import date
 import os
-from src.core.config import CHANNEL_ID, logger, DATA_DIR
+import pandas as pd
+from datetime import datetime, timedelta
+from src.core.config import logger, DATA_DIR
 from src.services.api_youtube_analytics import get_youtube_analytics_service
 
 def fetch_daily_stats(channel_id, start_date=None, end_date=None, metrics="views,likes,comments,subscribersGained"):
@@ -47,19 +47,3 @@ def fetch_daily_stats(channel_id, start_date=None, end_date=None, metrics="views
     except Exception as e:
         logger.error(f"Error al obtener estadísticas diarias de Analytics: {e}")
         return pd.DataFrame()
-
-if __name__ == "__main__":
-    if not CHANNEL_ID:
-        logger.error("❌ CHANNEL_ID no definido en la configuración/entorno")
-    else:
-        # 🔥 Descargar toda la historia del canal
-        df_daily = fetch_daily_stats(CHANNEL_ID)
-
-        if not df_daily.empty:
-            # Guardar CSV
-            os.makedirs(DATA_DIR, exist_ok=True)
-            output_path = os.path.join(DATA_DIR, "daily_stats.csv")
-            df_daily.to_csv(output_path, index=False, encoding="utf-8-sig")
-            logger.info(f"✅ Datos diarios guardados en {output_path}")
-        else:
-            logger.warning("No hay datos diarios para guardar.")

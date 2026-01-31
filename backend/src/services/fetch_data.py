@@ -1,6 +1,6 @@
 import pandas as pd
 from src.services.api_youtube import get_channel_stats, get_video_stats, get_videos_from_playlist
-from src.core.config import CHANNEL_ID, logger, DATA_DIR
+from src.core.config import logger, DATA_DIR
 import os
 
 def fetch_all_videos(channel_id, api_key=None):
@@ -67,13 +67,3 @@ def fetch_all_videos(channel_id, api_key=None):
             df[col] = None
 
     return df
-
-if __name__ == "__main__":
-    df = fetch_all_videos(CHANNEL_ID)
-    if not df.empty:
-        os.makedirs(DATA_DIR, exist_ok=True)
-        output_path = os.path.join(DATA_DIR, "videos.csv")
-        df.to_csv(output_path, index=False, encoding="utf-8-sig")
-        logger.info(f"✅ Datos guardados en {output_path}")
-    else:
-        logger.warning("No se obtuvieron datos para guardar.")
