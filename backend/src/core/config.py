@@ -24,17 +24,23 @@ logger = logging.getLogger("youtube_dashboard")
 # Cargar variables de entorno
 load_dotenv()
 
-# Configuración de la API
-API_KEY = os.getenv("API_KEY")
-CHANNEL_ID = os.getenv("CHANNEL_ID")
-CLIENT_SECRET_FILE = "client_secret.json"
-TOKEN_PICKLE_FILE = "token.pickle"
+# Configuración de la API (OAuth 2.0)
+API_KEY = os.getenv("API_KEY") # Optional: For public data if needed
+GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+SECRET_KEY = os.getenv("SECRET_KEY", "super-secret-key-change-it") # For JWT sessions
 
-# Validaciones básicas
-if not API_KEY:
-    logger.warning("API_KEY no encontrada en el archivo .env")
-if not CHANNEL_ID:
-    logger.warning("CHANNEL_ID no encontrada en el archivo .env")
+# Database
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./dashboard.db")
+
+# Deprecated (Legacy)
+# CHANNEL_ID = os.getenv("CHANNEL_ID") 
+# TOKEN_PICKLE_FILE = "token.pickle"
+
+# Validaciones críticas
+if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
+    logger.warning("⚠️ Faltan credenciales de Google OAuth (CLIENT_ID/SECRET) en .env")
+
 
 # Configuración de la App
 DATA_DIR = "data"

@@ -1,7 +1,17 @@
 # 🚀 Guía de Despliegue en Servidor Linux (CasaOS / Ubuntu)
 
-## 1. Archivos Necesarios
-Sube los siguientes archivos/carpetas a tu servidor (puedes usar FileZilla o `scp`):
+## 1. Opción A: Usando Git (Recomendado)
+Si ya subiste el código a GitHub/GitLab:
+1.  Conéctate por SSH a tu servidor.
+2.  Clona el repo:
+    ```bash
+    git clone <TU_URL_DEL_REPO>
+    cd dashboard-youtube
+    ```
+3.  Crea el archivo `.env` en la carpeta `backend/` (ver paso 2).
+
+## 1. Opción B: Subida Manual
+Si prefieres no usar Git en el servidor, sube los siguientes archivos con FileZilla:
 - `backend/`
 - `frontend/`
 - `docker-compose.yml`
