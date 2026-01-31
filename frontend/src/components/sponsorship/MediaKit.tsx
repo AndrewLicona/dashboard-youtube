@@ -103,9 +103,9 @@ export function MediaKit({ isOpen, onClose, totalSubscribers, videos, channelNam
                             </div>
                             <div className="mt-6 md:mt-0 text-right">
                                 <div className="bg-black text-white px-6 py-2 rounded-full inline-block mb-2 print:border print:border-black">
-                                    <span className="font-black uppercase tracking-widest text-xs">Gaming & Tech Creator</span>
+                                    <span className="font-black uppercase tracking-widest text-xs">Creador de Contenido</span>
                                 </div>
-                                <p className="text-sm font-medium text-gray-500">contact@ajdrew.com</p>
+                                <p className="text-sm font-medium text-gray-500">Contacto Profesional</p>
                             </div>
                         </header>
 
@@ -153,9 +153,9 @@ export function MediaKit({ isOpen, onClose, totalSubscribers, videos, channelNam
                             <div>
                                 <h4 className="text-2xl font-black uppercase mb-6">Por qué colaborar</h4>
                                 <p className="text-gray-600 leading-relaxed mb-6 font-medium text-sm">
-                                    Una audiencia altamente comprometida, enfocada en gaming y tecnología.
-                                    Contenido consistente con una tasa de retención superior al promedio del mercado.
-                                    Estilo visual único y profesional.
+                                    Una audiencia real y altamente comprometida.
+                                    Métricas transparentes y verificadas directamente desde YouTube API.
+                                    Calidad y consistencia en cada publicación.
                                 </p>
 
                                 <div className="grid grid-cols-2 gap-4">
