@@ -15,7 +15,7 @@ router = APIRouter()
 # Allow HTTP for local testing of OAuth (remove in production if using HTTPS)
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
-SCOPES = ["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics.readonly"]
+SCOPES = ["https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics.readonly", "https://www.googleapis.com/auth/youtube.upload"]
 
 def get_flow(redirect_uri):
     # Construct config dictionary from Env Vars
