@@ -7,6 +7,10 @@ NC='\033[0m' # No Color
 
 echo -e "${GREEN}🚀 Iniciando Despliegue de Dashboard YouTube${NC}"
 
+# 0. Actualizar Código
+echo -e "${YELLOW}📥 Descargando últimos cambios...${NC}"
+git pull origin main
+
 # 1. Verificar Docker
 if ! command -v docker &> /dev/null; then
     echo "❌ Docker no encontrado. Por favor instálalo primero."
