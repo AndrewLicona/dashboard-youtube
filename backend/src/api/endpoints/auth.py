@@ -1,17 +1,4 @@
-from fastapi import APIRouter, Request, Depends, HTTPException
-from fastapi.responses import RedirectResponse
-from google_auth_oauthlib.flow import Flow
-from sqlalchemy.orm import Session
-from ...core.database import get_db
-from ...services.auth_service import save_channel_credentials
-import os
-import pathlib
-from googleapiclient.discovery import build
 
-router = APIRouter()
-
-# Allow HTTP for local testing of OAuth (remove in production if using HTTPS)
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 from fastapi import APIRouter, Request, Depends, HTTPException
 from fastapi.responses import RedirectResponse
