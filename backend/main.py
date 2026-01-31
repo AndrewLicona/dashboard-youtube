@@ -19,6 +19,11 @@ from typing import Optional
 from src.services.fetch_data import fetch_all_videos
 from src.services.fetch_daily import fetch_daily_stats
 from src.core.config import logger, API_KEY
+from src.core.database import Base, engine
+from src.db.models import Channel  # Register models
+
+# Create Tables
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="AJDREW Analytics API")
 
