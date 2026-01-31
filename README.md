@@ -1,95 +1,73 @@
-# 🎬 Dashboard YouTube - AJDREW Gameplays  
+# 🚀 Dashboard YouTube - React + FastAPI (Dockerized)
 
-Este proyecto es un **dashboard interactivo** desarrollado con [Streamlit](https://streamlit.io/) para analizar estadísticas de un canal de YouTube. Permite visualizar métricas clave como **vistas, likes, comentarios**, evolución en el tiempo y ranking de videos.  
+Este es un dashboard avanzado para analíticas de YouTube, reescrito desde cero utilizando una arquitectura moderna y escalable.
 
----
-
-## ✨ Funcionalidades  
-
-### 📊 Dashboard principal  
-- Resumen general: total de videos, vistas, likes y comentarios.  
-- Evolución diaria y mensual de vistas, likes y comentarios.  
-- Comparación del último mes vs mes anterior.  
-- Top 10 videos más vistos.  
-- Tabla interactiva con miniaturas y filtros personalizados.  
-
-### 📈 Estadísticas detalladas  
-- Comparación de videos entre sí.  
-- Gráficos interactivos con [Plotly](https://plotly.com/).  
-
-### 📅 Estadísticas por fecha  
-- Selección de rangos: últimos 7, 28, 60, 90 días o todo el historial.  
-- Gráficos acumulados y diarios para vistas, likes y comentarios.  
-- Métricas rápidas (totales y promedios).  
+## ✨ Características Nuevas
+- **Frontend**: React 19 + Vite + Tailwind CSS (Tema "Gamer Green").
+- **Backend**: FastAPI (Python) para alto rendimiento.
+- **Base de Datos**: SQLite seguro con encriptación (Fernet) para tokens de OAuth.
+- **Multiusuario**: Soporte para múltiples canales simultáneos.
+- **URLs Públicas**: Comparte `tudominio.com/dashboard/CHANNEL_ID`.
+- **Docker**: Listo para desplegar en cualquier servidor Linux (Ubuntu/CasaOS).
 
 ---
 
-## 🛠️ Instalación  
+## 🛠️ Instalación Local (Desarrollo)
 
-1. **Clonar el repositorio**  
-
+### 1. Clonar
 ```bash
 git clone <URL_REPOSITORIO>
-cd <nombre_proyecto>
-  
-
+cd dashboard-youtube
 ```
 
-2. **Crear entorno virtual e instalar dependencias**
-
+### 2. Backend
 ```bash
+cd backend
 python -m venv venv
-source venv/bin/activate   # Linux / Mac
 venv\Scripts\activate      # Windows
-
+# source venv/bin/activate # Linux
 pip install -r requirements.txt
-
+python -m uvicorn main:app --reload
 ```
-3. **Configurar variables de entorno (.env)**
+
+### 3. Frontend
 ```bash
-
-CHANNEL_ID=TU_CHANNEL_ID
-API_KEY=TU_API_KEY
+cd frontend
+npm install
+npm run dev
 ```
-4. **Ejecutar la aplicación**
-```bash
-streamlit run src/main.py
-```
-### 📂 Estructura del proyecto
-```bash
-
-📦 proyecto
- ┣ 📂 data/              # Datos generados (ignorado en git)
- ┣ 📂 fetchs/            # Módulos para obtener datos de YouTube
- ┣ 📂 section/           # Secciones del dashboard
- ┣ 📂 src/               # Código principal
- ┣ .env                  # Variables de entorno (ignorado en git)
- ┣ .gitignore
- ┣ requirements.txt
- ┣ README.md
-
-```
-## 🚀 Tecnologías usadas
-- [Python](https://www.python.org/) 
-- [Streamlit](https://streamlit.io/)
-- [Pandas](https://pandas.pydata.org/)
-- [Plotly](https://plotly.com/)
-- [YouTube Analytics API](https://developers.google.com/youtube/v3/docs/channels)
----
-
-
-## 📸 Capturas  
-
-| Dashboard | Comparativa | Estadísticas |
-|-----------|-------------|--------------|
-| ![Dashboard](./img/image.png) | ![Comparativa](./img/image-3.png) | ![Estadísticas](./img/image-2.png) |
-
-| Ranking | Detalle | Evolución |
-|---------|---------|-----------|
-| ![Ranking](./img/image-5.png) | ![Detalle](./img/image-4.png) | ![Evolución](./img/image-1.png) |
 
 ---
 
+## 🐳 Despliegue en Servidor (Producción)
+
+Este proyecto está diseñado para correr con **Docker Compose**.
+
+### Prerrequisitos
+- Servidor Linux (Ubuntu, Debian, CasaOS).
+- Docker y Docker Compose instalados.
+
+### Pasos Rápidos
+1. Sube los archivos al servidor.
+2. Ejecuta el script de despliegue:
+```bash
+chmod +x deploy.sh
+./deploy.sh
+```
+
+Ver [README_SERVER.md](./README_SERVER.md) para la guía detallada de despliegue.
+
+---
+
+## 🔒 Variables de Entorno (.env)
+Crea un archivo `.env` en `backend/` con:
+```bash
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+SECRET_KEY=...
+```
+
+---
 
 ## 👨‍💻 Autor
-Proyecto desarrollado por **Andrew Licona**
+Desarrollado por **Andrew Licona**.

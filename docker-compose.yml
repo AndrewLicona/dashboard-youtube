@@ -1,13 +1,23 @@
-version: "3.9"
+version: '3.8'
 
 services:
-  ajdrew-dashboard:
-    build: .
-    container_name: ajdrew-dashboard
+  backend:
+    build: ./backend
     ports:
-      - "8501:8501"
-    env_file:
-      - .env
+      - "${BACKEND_PORT:-8000}:8000"
     volumes:
-      - ./data:/app/data   # monta la carpeta data para persistir resultados
-    restart: unless-stopped
+      - ./backend/data:/app/data
+      - ./backend/src:/app/src # Optional: Hot reload for dev
+    env_file:
+      - ./backend/.env
+    environment:
+      - DATABASE_URL=sqlite:////app/data/dashboard.db
+    restart: always
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    environment:
+      - VITE_API_URL=http://localhost:${BACKEND_PORT:-8000}
+    restart: always
