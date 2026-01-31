@@ -32,8 +32,11 @@ mkdir -p backend/data
 chmod 777 backend/data # Permisos para que Docker escriba la DB
 
 # 4. Construir y Levantar
+echo -e "${YELLOW}🛑 Deteniendo contenedores antiguos...${NC}"
+docker-compose down || true  # Ignorar error si no hay nada corriendo
+
 echo -e "${YELLOW}🐳 Construyendo contenedores...${NC}"
-docker-compose up -d --build
+docker-compose up -d --build --remove-orphans
 
 # 5. Estado Final
 echo -e "${GREEN}✅ ¡Despliegue Completado!${NC}"
