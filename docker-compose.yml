@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build: ./backend
@@ -7,7 +5,7 @@ services:
       - "${BACKEND_PORT:-8000}:8000"
     volumes:
       - ./backend/data:/app/data
-      - ./backend/src:/app/src # Optional: Hot reload for dev
+      - ./backend/src:/app/src
     env_file:
       - ./backend/.env
     environment:
@@ -15,9 +13,13 @@ services:
     restart: always
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        # Se puede dejar vacío o pasar una URL base por defecto
+        VITE_API_URL: /api
     ports:
-      - "${FRONTEND_PORT:-5173}:5173"
-    environment:
-      - VITE_API_URL=${API_PUBLIC_URL:-http://localhost:${BACKEND_PORT:-8000}}
+      - "${FRONTEND_PORT:-5173}:80"
+    depends_on:
+      - backend
     restart: always

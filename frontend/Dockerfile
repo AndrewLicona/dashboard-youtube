@@ -1,18 +1,20 @@
-# 1️⃣ Imagen de Node.js
-FROM node:20-alpine
-
-# 2️⃣ Directorio de trabajo
+# 1️⃣ Build Stage (Node.js)
+FROM node:20-alpine as build
 WORKDIR /app
-
-# 3️⃣ Copiar dependencias e instalarlas
 COPY package*.json ./
 RUN npm install
-
-# 4️⃣ Copiar el resto del código
 COPY . .
+# Argumento para "quemar" la variable de entorno durante el build de React
+ARG VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
+RUN npm run build
 
-# 5️⃣ Exponer puerto de Vite (Development)
-EXPOSE 5173
-
-# 6️⃣ Comando de inicio (con --host para que Docker lo exponga)
-CMD ["npm", "run", "dev", "--", "--host"]
+# 2️⃣ Production Stage (Nginx)
+FROM nginx:alpine
+# Copiar el build de React a la carpeta de Nginx
+COPY --from=build /app/dist /usr/share/nginx/html
+# Copiar configuración personalizada de Nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Exponer puerto 80 (interno del container)
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
