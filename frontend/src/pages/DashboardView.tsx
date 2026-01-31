@@ -153,7 +153,7 @@ export function DashboardView() {
                     {/* --- KPI Grid --- */}
                     <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-5 mb-10">
                         <KpiCard icon={<Play size={18} />} label="Videos Totales" value={videos.length} loading={loading} />
-                        <KpiCard icon={<TrendingUp size={18} />} label="Vistas (Periodo)" value={stats.current.views.toLocaleString()} diff={stats.diffs.views} loading={loading} highlight />
+                        <KpiCard icon={<TrendingUp size={18} />} label="Vistas (Periodo)" value={stats.current.views.toLocaleString()} diff={timeframe === 'all' ? undefined : stats.diffs.views} loading={loading} highlight />
                         <KpiCard
                             icon={<Users size={18} />}
                             label={timeframe === 'all' ? "Subs Totales" : "Nuevos Subs"}
@@ -161,7 +161,7 @@ export function DashboardView() {
                             diff={timeframe === 'all' ? undefined : stats.diffs.subscribers}
                             loading={loading}
                         />
-                        <KpiCard icon={<ThumbsUp size={18} />} label="Likes" value={stats.current.likes.toLocaleString()} diff={stats.diffs.likes} loading={loading} />
+                        <KpiCard icon={<ThumbsUp size={18} />} label="Likes" value={stats.current.likes.toLocaleString()} diff={timeframe === 'all' ? undefined : stats.diffs.likes} loading={loading} />
                     </section>
 
                     {/* --- Content Area --- */}

@@ -108,15 +108,9 @@ export function useDashboardData(timeframe: Timeframe, activeMetric: 'views' | '
         const now = new Date();
 
         if (timeframe === 'custom' && customRange?.start && customRange?.end) {
+            // ... (keep custom logic or simplify similarly if needed, but 'custom' usually provides full dates)
             cutoff = new Date(customRange.start);
             endCutoff = new Date(customRange.end);
-            // Ensure end date includes the whole day
-            endCutoff.setHours(23, 59, 59, 999);
-
-            // Calculate duration to determine previous period
-            const duration = endCutoff.getTime() - cutoff.getTime();
-            prevCutoff = new Date(cutoff.getTime() - duration);
-
         } else {
             let daysToFilter = 30;
             if (timeframe === '7d') daysToFilter = 7;
@@ -126,24 +120,29 @@ export function useDashboardData(timeframe: Timeframe, activeMetric: 'views' | '
             cutoff = new Date();
             cutoff.setDate(now.getDate() - daysToFilter);
 
-            // Previous period is just shift back same amount
+            // Previous period
             prevCutoff = new Date(cutoff);
             prevCutoff.setDate(cutoff.getDate() - daysToFilter);
         }
 
+        // Convert cutoffs to YYYY-MM-DD strings for safe comparison with d.day (which is YYYY-MM-DD)
+        const toIsoDate = (d: Date) => d.toISOString().split('T')[0];
+        const cutoffStr = toIsoDate(cutoff);
+        const endCutoffStr = endCutoff ? toIsoDate(endCutoff) : null;
+        const prevCutoffStr = toIsoDate(prevCutoff);
+
         const current = analytics.filter(d => {
-            const date = new Date(d.day);
-            if (timeframe === 'custom') {
-                return date >= cutoff && date <= endCutoff;
+            // d.day is "YYYY-MM-DD" string from backend
+            if (timeframe === 'custom' && endCutoffStr) {
+                return d.day >= cutoffStr && d.day <= endCutoffStr;
             }
-            return date >= cutoff;
+            return d.day >= cutoffStr;
         });
         // Sort current for charts
-        current.sort((a, b) => new Date(a.day).getTime() - new Date(b.day).getTime());
+        current.sort((a, b) => a.day.localeCompare(b.day));
 
         const previous = analytics.filter(d => {
-            const date = new Date(d.day);
-            return date >= prevCutoff && date < cutoff;
+            return d.day >= prevCutoffStr && d.day < cutoffStr;
         });
 
         return { current, previous };

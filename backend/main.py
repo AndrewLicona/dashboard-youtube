@@ -12,6 +12,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 import os
+import time
 
 from googleapiclient.discovery import build
 from typing import Optional
@@ -93,13 +94,19 @@ def get_analytics(
     csv_path = get_cache_path("daily_stats.csv", x_youtube_channel_id)
     
     if os.path.exists(csv_path):
-        try:
-            df = pd.read_csv(csv_path)
-            if 'day' in df.columns:
-                df['day'] = df['day'].astype(str)
-            return df.to_dict(orient="records")
-        except Exception as e:
-            logger.error(f"Error reading analytics cache: {e}")
+        # Check for cache expiry (24 hours)
+        file_age = time.time() - os.path.getmtime(csv_path)
+        if file_age > 86400: # 24 hours in seconds
+             logger.info(f"Cache expired for {x_youtube_channel_id} (Age: {file_age:.0f}s). Refreshing...")
+             # Fall through to fetch new data
+        else:
+            try:
+                df = pd.read_csv(csv_path)
+                if 'day' in df.columns:
+                    df['day'] = df['day'].astype(str)
+                return df.to_dict(orient="records")
+            except Exception as e:
+                logger.error(f"Error reading analytics cache: {e}")
     
     # Cache Miss: Try to fetch if we have a valid channel ID
     # Note: Requires stored OAuth token (token_{channel_id}.pickle)
