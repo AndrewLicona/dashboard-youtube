@@ -23,8 +23,8 @@ export function useDashboardData(timeframe: Timeframe, activeMetric: 'views' | '
             try {
                 setLoading(true);
                 setError(null);
-                const host = window.location.hostname;
-                const apiBase = `http://${host}:8000/api`;
+                // Use env var or default to relative path (handled by Nginx/Vite proxy)
+                const apiBase = import.meta.env.VITE_API_URL || '/api';
 
                 // Handle Auth Redirect Params
                 const params = new URLSearchParams(window.location.search);
