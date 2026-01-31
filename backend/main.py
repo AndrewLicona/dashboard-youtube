@@ -12,8 +12,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 import os
-import pickle
-import google_auth_oauthlib.flow
+
 from googleapiclient.discovery import build
 from typing import Optional
 from src.services.fetch_data import fetch_all_videos
