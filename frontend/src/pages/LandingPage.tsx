@@ -40,7 +40,7 @@ export function LandingPage() {
 
                 <div className="pt-8">
                     <a
-                        href="http://localhost:8000/api/auth/login"
+                        href="/api/auth/login"
                         className="group relative inline-flex items-center gap-4 px-8 py-4 bg-gamer-green text-black font-black text-lg uppercase tracking-widest rounded-2xl hover:bg-emerald-400 transition-all hover:scale-105 active:scale-95"
                     >
                         <span className="relative z-10">Conectar con YouTube</span>
