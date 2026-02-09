@@ -35,6 +35,9 @@ echo -e "${YELLOW}📂 Preparando carpetas...${NC}"
 mkdir -p backend/data
 chmod 777 backend/data # Permisos para que Docker escriba la DB
 
+# 3.5 Configurar entorno
+export VITE_API_URL="/api" # Forzamos que use el proxy de Nginx
+
 # 4. Construir y Levantar
 echo -e "${YELLOW}🛑 Deteniendo contenedores antiguos...${NC}"
 docker-compose down || true  # Ignorar error si no hay nada corriendo

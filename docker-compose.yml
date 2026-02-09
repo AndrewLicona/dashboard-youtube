@@ -17,7 +17,7 @@ services:
       context: ./frontend
       args:
         # Se puede dejar vacío o pasar una URL base por defecto
-        VITE_API_URL: /api
+        VITE_API_URL: ${VITE_API_URL:-/api}
     ports:
       - "${FRONTEND_PORT:-5173}:80"
     depends_on:
