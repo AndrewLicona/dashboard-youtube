@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
-import { Activity, Play, ThumbsUp, TrendingUp, Users } from 'lucide-react'
+import axios from 'axios';
+import { Activity, Play, ThumbsUp, TrendingUp, Users, RefreshCcw } from 'lucide-react'
 
 import type { Timeframe, DateRange } from '../types'
 import { useDashboardData } from '../hooks/useDashboardData'
@@ -62,6 +63,30 @@ export function DashboardView() {
                         <span className="text-sm font-bold text-gray-400 uppercase tracking-wider">
                             {loading ? 'Sincronizando datos...' : error ? 'Error de Conexión' : 'Sistema Online'}
                         </span>
+
+                        {!loading && !error && (
+                            <button
+                                onClick={async () => {
+                                    try {
+                                        const apiBase = import.meta.env.VITE_API_URL || '/api';
+                                        const apiKey = localStorage.getItem('yt_api_key');
+                                        const targetId = localStorage.getItem('yt_viewing_id') || localStorage.getItem('yt_channel_id');
+                                        const headers: Record<string, string> = {};
+                                        if (targetId) headers['x-youtube-channel-id'] = targetId;
+                                        if (apiKey) headers['x-youtube-api-key'] = apiKey;
+
+                                        await axios.post(`${apiBase}/refresh`, {}, { headers });
+                                        window.location.reload();
+                                    } catch (e) {
+                                        alert("Error al refrescar datos.");
+                                    }
+                                }}
+                                className="ml-2 p-1 text-gray-500 hover:text-white transition-colors"
+                                title="Forzar Actualización de Datos"
+                            >
+                                <RefreshCcw size={14} />
+                            </button>
+                        )}
                     </div>
 
                     {!analyticsMissing && channelStats?.title && (

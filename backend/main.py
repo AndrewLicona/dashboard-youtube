@@ -96,53 +96,18 @@ def get_analytics(
     if os.path.exists(csv_path):
         # Check for cache expiry (24 hours)
         file_age = time.time() - os.path.getmtime(csv_path)
-        if file_age > 86400: # 24 hours in seconds
+        if file_age > 14400: # 4 hours in seconds (lowered from 24h)
              logger.info(f"Cache expired for {x_youtube_channel_id} (Age: {file_age:.0f}s). Refreshing...")
              # Fall through to fetch new data
-        else:
-            try:
-                df = pd.read_csv(csv_path)
-                if 'day' in df.columns:
-                    df['day'] = df['day'].astype(str)
-                return df.to_dict(orient="records")
-            except Exception as e:
-                logger.error(f"Error reading analytics cache: {e}")
-    
-    # Cache Miss: Try to fetch if we have a valid channel ID
-    # Note: Requires stored OAuth token (token_{channel_id}.pickle)
-    if x_youtube_channel_id:
-        logger.info(f"Analytics Cache miss for {x_youtube_channel_id}. Attempting fetch...")
-        try:
-            df = fetch_daily_stats(x_youtube_channel_id)
-            if not df.empty:
-                os.makedirs("data", exist_ok=True)
-                df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-                if 'day' in df.columns:
-                    df['day'] = df['day'].astype(str)
-                return df.to_dict(orient="records")
-        except Exception as e:
-             logger.error(f"Error fetching daily stats: {e}")
-             # Don't crash, just return empty so UI shows warning
-    
-    # Fallback to default demo data ONLY if we are requesting the main channel 
-    # AND we failed to fetch/load custom data.
-    # Fallback to default demo data ONLY if we failed to fetch/load custom data and have no ID
-    if not x_youtube_channel_id:
-        # Try default
-        default_path = os.path.join("data", "daily_stats.csv")
-        if os.path.exists(default_path):
-             df = pd.read_csv(default_path)
-             if 'day' in df.columns: df['day'] = df['day'].astype(str)
-             return df.to_dict(orient="records")
 
-    return []
+# ... (skipping unchanged lines) ...
 
 @app.post("/api/refresh")
 async def refresh_data(
     x_youtube_channel_id: Optional[str] = Header(None),
     x_youtube_api_key: Optional[str] = Header(None)
 ):
-    """Force refresh data."""
+    """Force refresh data (Videos & Analytics)."""
     if not x_youtube_api_key:
          # Use default if configured? No, require keys for dynamic operations
          return {"message": "API Key required for refresh"}
@@ -153,13 +118,26 @@ async def refresh_data(
     
     # Run sync fetch (blocking for simplicity in MVP)
     try:
-        df = fetch_all_videos(target_id, x_youtube_api_key)
-        
-        path = get_cache_path("videos.csv", x_youtube_channel_id)
+        # 1. Refresh Videos
+        df_videos = fetch_all_videos(target_id, x_youtube_api_key)
+        video_path = get_cache_path("videos.csv", x_youtube_channel_id)
         os.makedirs("data", exist_ok=True)
-        df.to_csv(path, index=False, encoding="utf-8-sig")
+        df_videos.to_csv(video_path, index=False, encoding="utf-8-sig")
+
+        # 2. Refresh Analytics (Daily Stats)
+        # Note: This requires OAuth token to be present in DB/File for target_id
+        try:
+            df_analytics = fetch_daily_stats(target_id)
+            if not df_analytics.empty:
+                analytics_path = get_cache_path("daily_stats.csv", x_youtube_channel_id)
+                df_analytics.to_csv(analytics_path, index=False, encoding="utf-8-sig")
+                if 'day' in df_analytics.columns:
+                    df_analytics['day'] = df_analytics['day'].astype(str) # Normalize for return if needed
+        except Exception as e:
+            logger.error(f"Refresh: Failed to update analytics for {target_id}: {e}")
+            # We continue even if analytics fail, at least videos are updated
         
-        return {"message": f"Successfully refreshed {len(df)} videos for {target_id}"}
+        return {"message": f"Successfully refreshed data for {target_id}"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
