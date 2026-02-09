@@ -44,6 +44,11 @@ def save_channel_credentials(db: Session, channel_info: dict, credentials):
         )
         db.add(db_channel)
     
+    if refresh_token_enc:
+        print(f"DEBUG: Saving NEW refresh token for {channel_id}")
+    else:
+        print(f"DEBUG: No refresh token to save for {channel_id} (Is this a re-auth without prompt?)")
+
     db.commit()
     db.refresh(db_channel)
     return db_channel

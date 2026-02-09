@@ -18,6 +18,11 @@ def get_youtube_analytics_service(channel_id=None):
             with SessionLocal() as db:
                 creds_data = get_credentials_from_db(db, channel_id)
                 if creds_data:
+                    logger.info(f"Loaded credentials for {channel_id}. "
+                                f"Has Refresh Token: {bool(creds_data.get('refresh_token'))}, "
+                                f"Has Client ID: {bool(creds_data.get('client_id'))}, "
+                                f"Has Client Secret: {bool(creds_data.get('client_secret'))}")
+                    
                     creds = Credentials(
                         token=creds_data["token"],
                         refresh_token=creds_data.get("refresh_token"),
