@@ -6,6 +6,7 @@ services:
     volumes:
       - ./backend/data:/app/data
       - ./backend/src:/app/src
+      - ./backend/main.py:/app/main.py
     env_file:
       - ./backend/.env
     environment:
