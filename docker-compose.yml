@@ -10,6 +10,8 @@ services:
       - ./backend/.env
     environment:
       - DATABASE_URL=sqlite:////app/data/dashboard.db
+      - API_BASE_URL=https://dashboard.andrewlamaquina.my
+      - FRONTEND_URL=https://dashboard.andrewlamaquina.my
     restart: always
 
   frontend:

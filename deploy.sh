@@ -37,6 +37,8 @@ chmod 777 backend/data # Permisos para que Docker escriba la DB
 
 # 3.5 Configurar entorno
 export VITE_API_URL="/api" # Forzamos que use el proxy de Nginx
+export API_BASE_URL="https://dashboard.andrewlamaquina.my"
+export FRONTEND_URL="https://dashboard.andrewlamaquina.my"
 
 # 4. Construir y Levantar
 echo -e "${YELLOW}🛑 Deteniendo contenedores antiguos...${NC}"
